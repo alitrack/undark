@@ -3,6 +3,7 @@
 Undark is a tool that will go through your entire SQLite database file and dump out all rows of data it finds still intact ( both current and deleted rows ). Undark does not differentiate between current and deleted data. The output of Undark is plain text CSV format.
 
 this project is forked from [Undark v0.6](http://pldaniels.com/undark/)
+
 Original Author: [Paul L Daniels]( pldaniels@pldaniels.com )
 
 **What Undark can do:**
