@@ -1,0 +1,20 @@
+------TODO list---------
+
++ Implement the options;
+	freespace-minimum
+
++ Integrate both freespace detection/decoding and standard decoding in a single pass
+
++ Add more test cases
+
++ Determine why false row entries occur, usually within a few dozen bytes of the legit row
+
++ Sort out if we should be handling freePAGES as a separate type of data block
+
++ Clean up the code, removing a lot of the tangled mess between free pages vs blocks
+
++ Bring the man page up to date
+
++ Auto page size detect and offset/alignment detection for badly damaged databases or partial files
+
+------------------------

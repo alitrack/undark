@@ -1,0 +1,43 @@
+.\" undark is a simple program which provides extensive email attachment extraction abilities.
+.TH "Undark" "1" "0.4" "Paul L Daniels" "SQLite3 DB Data Extractor / Undeleter"
+.SH "NAME"
+undark .
+.SH "SYNTAX"
+undark -i <sms.db file> [-d] [-v] [-V|--version] [--cellcount-min=<count>] [--cellcount-max=<count>] [--rowsize-min=<bytes>] [--rowsize-max=<bytes>] [--no-blobs] [--blob-size-limit=<bytes>] [--fine-search]
+
+.br 
+.SH "DESCRIPTION"
+Undark is a command line tool used to extract all data records from a SQLite3 database file, including those which have been previously deleted ( but not yet vacuumed ).
+.SH "OPTIONS"
+.LP 
+.TP 
+\-i
+input SQLite3 format database
+\-d
+enable debugging output (very large dumps)
+\-v
+enable verbose output
+\-V|\-\-version
+show version of software
+\-h|\-\-help: show this help
+\-\-cellcount-min: define the minimum number of cells a row must have to be extracted
+\-\-cellcount-max: define the maximum number of cells a row must have to be extracted
+\-\-rowsize-min: define the minimum number of bytes a row must have to be extracted
+\-\-rowsize-max: define the maximum number of bytes a row must have to be extracted
+\-\-no-blobs: disable the dumping of blob data
+\-\-blob-size-limit: all blobs larger than this size are dumped to .blob files
+\-\-fine_search: search DB shifting one byte at a time, rather than records
+
+\-\-debug
+Produces detailed information about the whole decoding process
+
+.SH "EXAMPLES"
+.LP 
+undark -i sms.db | sort | uniq > dump.txt
+.LP 
+
+.SH "AUTHORS"
+Paul L Daniels
+.br 
+Undark WWW site http://www.pldaniels.com/undark
+.br 

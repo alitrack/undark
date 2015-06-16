@@ -1,0 +1,38 @@
+Undark CHANGELOG
+---------------------
+2013-10-02: v0.1
+	Initial edition
+
+2013-10-06: v0.2 
+	Released to public, complete overhaul and now works on all SQLite3 DBs with generic tables
+
+2013-10-08: v0.3
+	Fixed CSV formatting
+
+	Added blob dumping to rows and optionally files
+
+	Added row selection constraints;
+		-minimum/maximum cell count
+		-minimum/maximum row byte size
+
+2013-10-26:	v0.4
+	Fixed typo in help output ( --fine_search )
+	Added --page-size parameter for when dealing with broken headers.
+	Added --freespace to make undark search for data in the freespace
+	Added --blob-size-limit, beyond which blobs are dumped to files
+	Added --no-blobs, to disable the dumping of blob data
+	Added --fine-search, making Undark shift only byte at a time rather than whole records after decoding
+
+	Blob data can extend beyond the current page
+
+2013-12-18: v0.5
+	Fixed segfault where overflow page seeking went beyond file limits
+	Added -ggdb debugging and -O0 for when you need to valgrind ( manual change in Makefile )
+
+2014-01-30: 
+	Fixed decoding of 2's compliment 16 and 32 bit big endian numbers.
+
+2014-12-19:
+	Fixed boundary checking when looking for overflow pages ( segfault ).
+
+END.
