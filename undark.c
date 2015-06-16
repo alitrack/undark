@@ -17,12 +17,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <sys/mman.h>
+//#include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+//#include <arpa/inet.h>
+#ifndef _WIN32
 #include <arpa/inet.h>
+#include <sys/mman.h>
+#else
+#include <winsock2.h>
+#include <mman.h>
+#endif
 #include <ctype.h>
 #include <time.h>
 #include <errno.h>

@@ -1,0 +1,28 @@
+# 
+# VERSION CHANGES
+#
+#usage: CC=i686-w64-mingw32.static-gcc make -f Makefile.mingw32
+#depends on https://github.com/witwall/mman-win32
+LOCATION=/usr/local
+#CFLAGS=-Wall -g -I. -O2 -s
+CFLAGS=-Wall -ggdb -I. -O0 
+
+LIBS=-lws2_32 -lmman
+OBJ=undark
+OFILES=varint.o 
+default: undark
+
+.c.o:
+	${CC} ${CFLAGS} $(COMPONENTS) -c $*.c
+
+all: ${OBJ} 
+
+undark: ${OFILES} undark.c 
+	${CC} ${CFLAGS} $(COMPONENTS) undark.c ${OFILES} -o undark.exe ${LIBS}
+
+install: ${OBJ}
+	cp undark ${LOCATION}/bin/
+	cp undark.1  ${LOCATION}/man/man1
+
+clean:
+	rm -f *.o *core ${OBJ}
