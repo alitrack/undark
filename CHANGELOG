@@ -35,4 +35,7 @@ Undark CHANGELOG
 2014-12-19:
 	Fixed boundary checking when looking for overflow pages ( segfault ).
 
+2015-07-23: v0.7 - PENDING
+	Added floating-point decoding
+
 END.

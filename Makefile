@@ -3,8 +3,8 @@
 #
 
 LOCATION=/usr/local
-#CFLAGS=-Wall -g -I. -O2
-CFLAGS=-Wall -ggdb -I. -O0
+CFLAGS=-Wall -g -I. -O2
+#CFLAGS=-Wall -ggdb -I. -O0
 
 OBJ=undark
 OFILES=varint.o 
@@ -16,8 +16,8 @@ default: undark
 all: ${OBJ} 
 
 undark: ${OFILES} undark.c 
-	ctags *.[ch]
-	clear
+#	ctags *.[ch]
+#	clear
 	${CC} ${CFLAGS} $(COMPONENTS) undark.c ${OFILES} -o undark ${LIBS}
 
 install: ${OBJ}

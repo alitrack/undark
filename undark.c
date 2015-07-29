@@ -23,6 +23,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 //#include <arpa/inet.h>
+#include <ctype.h>
+#include <time.h>
+#include <errno.h>
 #ifndef _WIN32
 #include <arpa/inet.h>
 #include <sys/mman.h>
@@ -30,9 +33,6 @@
 #include <winsock2.h>
 #include <mman.h>
 #endif
-#include <ctype.h>
-#include <time.h>
-#include <errno.h>
 
 #include "varint.h"
 
@@ -61,6 +61,7 @@
 #define PARAM_PAGE_SIZE "--page-size="
 #define PARAM_PAGE_START "--page-start="  // add to 0.5
 #define PARAM_PAGE_END "--page-end=" // add to 0.5
+#define PARAM_REMOVED_ONLY "--removed-only"
 
 
 
@@ -83,6 +84,7 @@ struct globals {
 	uint32_t *freelist_pages;
 	uint32_t freelist_pages_current_index;
 	int freelist_space_only;
+	int removed_only;
 	size_t freespace_minimum;
 
 	time_t date_upper, date_lower; // deprecated - now that Undark has become a generic tool
@@ -131,7 +133,7 @@ struct sqlite_leaf_header {
 };
 
 
-char version[] = "undark version 0.6, by Paul L Daniels ( pldaniels@pldaniels.com )\n";
+char version[] = "undark version 0.7, by Paul L Daniels ( pldaniels@pldaniels.com )\n";
 char help[] = "-i <sqlite DB> [-d] [-v] [-V|--version] [--cellcount-min=<count>] [--cellcount-max=<count>] [--rowsize-min=<bytes>] [--rowsize-max=<bytes>] [--no-blobs] [--blob-size-limit=<bytes>] [--page-size=<bytes>] [--page-start=<number>] [--page-end=<number>] [--freespace] [--freespace-minimum=<bytes>]\n"
 "\t-i: input SQLite3 format database\n"
 "\t-d: enable debugging output (very large dumps)\n"
@@ -146,6 +148,7 @@ char help[] = "-i <sqlite DB> [-d] [-v] [-V|--version] [--cellcount-min=<count>]
 "\t--blob-size-limit: all blobs larger than this size are dumped to .blob files\n"
 "\t--fine-search: search DB shifting one byte at a time, rather than records\n"
 "\t--page-size: hard code the page size for the DB (useful when header is damaged)\n"
+"\t--removed-only: Dumps rows that have their key set to -1\n"
 //"\t--page-start: starting page to scan in db\n"
 //"\t--page-end: ending page to scan in db\n"
 "\t--freespace: search for rows in the freespace\n"
@@ -190,6 +193,7 @@ int UNDARK_init( struct globals *g ) {
 	g->blob_size_limit = SIZE_MAX; // C99 
 	g->fine_search = 0;
 	g->freelist_space_only = 0;
+	g->removed_only = 0;
 	g->freespace_minimum = SIZE_MAX; // C99
 	g->page_start = 0;
 	g->page_end = 0;
@@ -312,6 +316,9 @@ int UNDARK_parse_parameters( int argc, char **argv, struct globals *g ) {
 
 			} else if (strncmp(p,PARAM_FREESPACE_ONLY, strlen(PARAM_FREESPACE_ONLY))==0) {
 				g->freelist_space_only = 1;
+
+			} else if (strncmp(p,PARAM_REMOVED_ONLY, strlen(PARAM_REMOVED_ONLY))==0) {
+				g->removed_only = 1;
 
 			} else {
 				fprintf(stderr,"Cannot interpret extended parameter: \"%s\"\n",p);
@@ -845,7 +852,31 @@ int decode_row( struct globals *g, char *p, char *data_endpoint, struct sql_payl
 }
 
 
+/*-----------------------------------------------------------------\
+  Date Code:	: 20150723-210259
+  Function Name	: ntonll
+  Returns Type	: uint64_t
+  	----Parameter List
+	1. uint64_t value, 
+	------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
+Comments:
 
+--------------------------------------------------------------------
+Changes:
+
+\------------------------------------------------------------------*/
+uint64_t ntohll(uint64_t value) {
+
+// hdump( &value, 8, "FP: ");
+	if (1==ntohl(1)) {
+	  return value;
+	} else {
+		return ((ntohl((value) & 0xFFFFFFFF) << 32) | ntohl((value) >> 32));
+	}
+}
 
 /*-----------------------------------------------------------------\
   Date Code:	: 20131008-182215
@@ -930,7 +961,7 @@ int dump_row( struct globals *g, char *base, char *data_endpoint, struct sql_pay
 	} else t = -1;
 
 	while (t <= payload->cell_count) {
-		double tmpf;
+		long double ldf;
 		DEBUG fprintf(stdout,"%s:%d:DEBUG: Cell[%d], Type:%d, size:%d, offset:%d\n", FL , t, payload->cells[t].t, payload->cells[t].s, payload->cells[t].o);
 		if (t == -1) fprintf(stdout,"%ld", (long unsigned int) payload->rowid);
 		if (t>=0) { fprintf(stdout,",");
@@ -961,9 +992,14 @@ int dump_row( struct globals *g, char *base, char *data_endpoint, struct sql_pay
 				case 5: fprintf(stdout,"%d", ntohl(*(payload->mapped_data +payload->cells[t].o))); break;
 				case 6: fprintf(stdout,"%d", ntohl(*(payload->mapped_data +payload->cells[t].o))); break;
 				case 7: 
-						  tmpf = (double)ntohl(*(payload->mapped_data +payload->cells[t].o));
-						  fprintf(stdout,"%f",tmpf); 
+						  {
+						  uint64_t n;
+							memcpy(&n, payload->mapped_data +payload->cells[t].o, 8 );
+							ldf = (long double)ntohll(n);
+						  fprintf(stdout,"%LF",ldf); 
+						  }
 						  break;
+
 				case 8: fprintf(stdout,"0" ); break;
 				case 9: fprintf(stdout,"1" ); break;
 				case 12: 
@@ -1043,8 +1079,18 @@ char *find_next_row( struct globals *g, char *s, char *end_point, char *global_s
 
 		row = decode_row( g, p, end_point, &sql, mode, forced_length );
 		if (row) {
-			DEBUG fprintf(stdout,"ROWID: %ld found [+%d] record size: %d bytes\n", (unsigned long int)sql.rowid, p -global_start, (unsigned int)( sql.length+sql.prefix_length ));
+			DEBUG fprintf(stdout,"ROWID: %ld found [+%ld] record size: %d bytes\n", (unsigned long int)sql.rowid, p -global_start, (unsigned int)( sql.length+sql.prefix_length ));
 			fflush(stdout);
+
+			/** If we're only wanting the removed, no-key-value rows, then 
+			  * continue to the next row 
+			  */
+			if ((g->removed_only)&&(row >= 0)) {
+				p++;
+				continue;
+			}
+
+
 
 			if ((mode == DECODE_MODE_NORMAL)&&( g->freelist_space_only == 1)) {
 				// do nothing
@@ -1421,7 +1467,7 @@ int main( int argc, char **argv ) {
 						if (row > g->db_cpp_limit) fprintf(stdout,"ERROR: beyond end point\n");
 						if (row < g->db_cfp) DEBUG fprintf(stdout,"%s:%d:DEBUG: Row location not in g->db_cfp page\n", FL );
 						if (row == NULL) DEBUG fprintf(stdout,"%s:%d:DEBUG: Row has been returned as NULL\n", FL );
-						DEBUG fprintf(stdout,"%s:%d:DEBUG: ROW found at offset: %d\n", FL, row-g->db_cfp);
+						DEBUG fprintf(stdout,"%s:%d:DEBUG: ROW found at offset: %ld\n", FL, row-g->db_cfp);
 					} else {
 
 						break;
