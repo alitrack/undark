@@ -3,8 +3,8 @@
 #
 
 LOCATION=/usr/local
-CFLAGS=-Wall -g -I. -O2
-#CFLAGS=-Wall -ggdb -I. -O0
+#CFLAGS=-Wall -g -I. -O2
+CFLAGS=-Wall -ggdb -I. -O0
 
 OBJ=undark
 OFILES=varint.o 
