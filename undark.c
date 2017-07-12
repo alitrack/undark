@@ -1,17 +1,17 @@
 /**
- * undark - generic data puller from SQLite DBs.
- *
- * Rather CPU intensive likely, relies on the correlation
- * that the SQLite length of payload should be the same
- * as the summation of the payload cell sizes.
- *
- * Written by Paul L Daniels (pldaniels@pldaniels.com)
- *
- * BSD Revised licence ( see LICENCE )
- *
- * Original version released October 6, 2013
- *
- */
+* undark - generic data puller from SQLite DBs.
+*
+* Rather CPU intensive likely, relies on the correlation
+* that the SQLite length of payload should be the same
+* as the summation of the payload cell sizes.
+*
+* Written by Paul L Daniels (pldaniels@pldaniels.com)
+*
+* BSD Revised licence ( see LICENCE )
+*
+* Original version released October 6, 2013
+*
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -156,15 +156,15 @@ char help[] = "-i <sqlite DB> [-d] [-v] [-V|--version] [--cellcount-min=<count>]
 ;
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131023-105927
-  Function Name	: UNDARK_init
-  Returns Type	: int
-  ----Parameter List
-  1. struct globals *g , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131023-105927
+Function Name	: UNDARK_init
+Returns Type	: int
+----Parameter List
+1. struct globals *g , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 --------------------------------------------------------------------
@@ -174,8 +174,8 @@ Changes:
 int UNDARK_init( struct globals *g ) {
 
 	/**
-	 * Initialise our globals 
-	 */
+	* Initialise our globals 
+	*/
 	g->page_size = 0;
 	g->page_count = 0;
 	g->page_number = 1;
@@ -208,17 +208,17 @@ int UNDARK_init( struct globals *g ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131023-105933
-  Function Name	: UNDARK_parse_parameters
-  Returns Type	: int
-  ----Parameter List
-  1. int argc, 
-  2.  char **argv, 
-  3.  struct globals *g , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131023-105933
+Function Name	: UNDARK_parse_parameters
+Returns Type	: int
+----Parameter List
+1. int argc, 
+2.  char **argv, 
+3.  struct globals *g , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 --------------------------------------------------------------------
@@ -230,9 +230,9 @@ int UNDARK_parse_parameters( int argc, char **argv, struct globals *g ) {
 	int param;
 
 	/**
-	 * We need at least some additional parameters 
-	 *
-	 */
+	* We need at least some additional parameters 
+	*
+	*/
 	if (argc < 2) {
 		fprintf(stderr,"%s", help);
 		exit(1);
@@ -240,9 +240,9 @@ int UNDARK_parse_parameters( int argc, char **argv, struct globals *g ) {
 
 
 	/**
-	 * Decode the input parameters.
-	 * Yes, I know, I should do this using gnu params etc.
-	 */
+	* Decode the input parameters.
+	* Yes, I know, I should do this using gnu params etc.
+	*/
 	for (param = 1; param < argc; param++) {
 		char *p = argv[param];
 
@@ -260,7 +260,7 @@ int UNDARK_parse_parameters( int argc, char **argv, struct globals *g ) {
 			}
 		} else if (strncmp(p,"--", 2) == 0) {
 
-			DEBUG fprintf(stderr,"Parameter: '%s' %d\n", p, strlen(PARAM_BLOB_SIZE_LIMIT));
+			DEBUG fprintf(stderr,"Parameter: '%s' %lu\n", p, strlen(PARAM_BLOB_SIZE_LIMIT));
 			// extended parameters 
 
 			if (strncmp(p,PARAM_VERSION, strlen(PARAM_VERSION))==0) {
@@ -341,15 +341,15 @@ int UNDARK_parse_parameters( int argc, char **argv, struct globals *g ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131006-121932
-  Function Name	: to_signed_byte
-  Returns Type	: char
-  ----Parameter List
-  1. unsigned char value, 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131006-121932
+Function Name	: to_signed_byte
+Returns Type	: char
+----Parameter List
+1. unsigned char value, 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 Converts 2's compliment byte to signed integer
@@ -383,16 +383,16 @@ long int to_signed_long( unsigned long int value ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131002-220244
-  Function Name	: tdump
-  Returns Type	: int
-  ----Parameter List
-  1. char *p, 
-  2.  uint16_t l , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131002-220244
+Function Name	: tdump
+Returns Type	: int
+----Parameter List
+1. char *p, 
+2.  uint16_t l , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 --------------------------------------------------------------------
@@ -413,16 +413,16 @@ int tdump( char *p, uint16_t l ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131006-122020
-  Function Name	: sqltdump
-  Returns Type	: int
-  ----Parameter List
-  1. char *p, 
-  2.  uint16_t l , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131006-122020
+Function Name	: sqltdump
+Returns Type	: int
+----Parameter List
+1. char *p, 
+2.  uint16_t l , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 Dumps text in a SQL friendly format ( doubling of single quotes )
 
@@ -447,16 +447,16 @@ int sqltdump( char *p, uint16_t l ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131007-004650
-  Function Name	: blob_dump
-  Returns Type	: int
-  ----Parameter List
-  1. unsigned char *p, 
-  2.  uint16_t l , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131007-004650
+Function Name	: blob_dump
+Returns Type	: int
+----Parameter List
+1. unsigned char *p, 
+2.  uint16_t l , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 --------------------------------------------------------------------
@@ -479,16 +479,16 @@ int blob_dump( unsigned char *p, uint16_t l ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131002-220250
-  Function Name	: hdump
-  Returns Type	: int
-  ----Parameter List
-  1. char *p, 
-  2.  uint16_t l , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131002-220250
+Function Name	: hdump
+Returns Type	: int
+----Parameter List
+1. char *p, 
+2.  uint16_t l , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 Combo hex + text dump, 16 byte wide rows
@@ -551,17 +551,17 @@ int hdump( unsigned char *p, uint16_t length, char *msg ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131007-184003
-  Function Name	: blob_dump_to_file
-  Returns Type	: int
-  ----Parameter List
-  1. struct globals *glob, 
-  2.  char *p, 
-  3.  size_t l , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131007-184003
+Function Name	: blob_dump_to_file
+Returns Type	: int
+----Parameter List
+1. struct globals *glob, 
+2.  char *p, 
+3.  size_t l , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 --------------------------------------------------------------------
@@ -574,12 +574,12 @@ int blob_dump_to_file( struct globals *g, char *p, size_t l ) {
 	char fn[1024];
 
 	snprintf(fn, sizeof(fn), "%d.blob", g->blob_count);
-	DEBUG fprintf(stdout,"%s:%d:DEBUG: Writing %d bytes to %s\n", FL , l, fn );
+	DEBUG fprintf(stdout,"%s:%d:DEBUG: Writing %lu bytes to %s\n", FL , l, fn );
 	f = open(fn, O_WRONLY|O_CREAT|O_TRUNC, S_IRUSR|S_IWUSR );
 	if (!f) { fprintf(stderr,"Cannot open %s (%s)\n", fn, strerror(errno)); return 1; }
 	written = write(f, p, l);
 	if ( written != l ) {
-		fprintf(stderr,"Wrote %d of %d bytes to %s ( %s )\n", written, l, fn, strerror(errno));
+		fprintf(stderr,"Wrote %ld of %ld bytes to %s ( %s )\n", written, l, fn, strerror(errno));
 		close(f);
 		return 1;
 	}
@@ -591,17 +591,17 @@ int blob_dump_to_file( struct globals *g, char *p, size_t l ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131003-223556
-  Function Name	: *bstrstr
-  Returns Type	: char
-  ----Parameter List
-  1. char *needle, 
-  2.  char *haystack, 
-  3.  char *limit , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131003-223556
+Function Name	: *bstrstr
+Returns Type	: char
+----Parameter List
+1. char *needle, 
+2.  char *haystack, 
+3.  char *limit , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 Searches for the needle among a haystack possibly containing
 \0 delimeted data.
@@ -640,16 +640,16 @@ char *bstrstr( char *haystack, char *needle, char *limit ) {
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131004-175721
-  Function Name	: decode_row_meta
-  Returns Type	: int
-  ----Parameter List
-  1. uint8_t *p, 
-  2.  struct sql_payload *payload , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131004-175721
+Function Name	: decode_row_meta
+Returns Type	: int
+----Parameter List
+1. uint8_t *p, 
+2.  struct sql_payload *payload , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 Decodes the payload header data so that we can then later
@@ -771,7 +771,7 @@ int decode_row( struct globals *g, char *p, char *data_endpoint, struct sql_payl
 
 	plh_ep += payload->header_size; // if we got a sane value, then we can use this for the full decode size ( includes the size of the first varint telling us the size )
 
-	DEBUG { fprintf(stdout,"[L:%lld][id:%lld][PLHz:%lld]", payload->length, payload->rowid, payload->header_size); }
+	DEBUG { fprintf(stdout,"[L:%lu][id:%lu][PLHz:%lu]", payload->length, payload->rowid, payload->header_size); }
 
 	t = 0;
 	offset = 0;
@@ -807,7 +807,7 @@ int decode_row( struct globals *g, char *p, char *data_endpoint, struct sql_payl
 		offset += payload->cells[t].s;
 		if (offset > payload->length) return 0;
 
-		DEBUG { fprintf(stdout,"[%d:%d:%d-%d(%d)]", t, payload->cells[t].t, payload->cells[t].s, payload->cells[t].o, plh_ep -p ); }
+		DEBUG { fprintf(stdout,"[%d:%d:%d-%d(%ld)]", t, payload->cells[t].t, payload->cells[t].s, payload->cells[t].o, plh_ep -p ); }
 
 		if (p >= plh_ep) break;
 		t++;
@@ -817,12 +817,12 @@ int decode_row( struct globals *g, char *p, char *data_endpoint, struct sql_payl
 
 	if (p == plh_ep) {
 		DEBUG {
-			fprintf(stdout,"DEBUG: Payload head size match. (%d =? %d)\n ", p -base,plh_ep -base);
+			fprintf(stdout,"DEBUG: Payload head size match. (%ld =? %ld)\n ", p -base,plh_ep -base);
 			fprintf(stdout,"DEBUG: Data size by cell meta sum = %d\n ", offset );
 		}
 	} else {
 		DEBUG {
-			fprintf(stdout,"DEBUG: Payload scan end point, and predicted end point didn't match, difference %d \n", p -plh_ep );
+			fprintf(stdout,"DEBUG: Payload scan end point, and predicted end point didn't match, difference %ld \n", p -plh_ep );
 		}
 	}
 
@@ -835,8 +835,8 @@ int decode_row( struct globals *g, char *p, char *data_endpoint, struct sql_payl
 
 	if (mode == DECODE_MODE_FREESPACE) {
 		/** there can often be multiple entries within freespace, so we have to be
-		 * a little looser with our acceptance criterion
-		 */
+		* a little looser with our acceptance criterion
+		*/
 		if (offset <= payload->length) {
 			DEBUG fprintf(stdout,"%s:%d:DEBUG: FREESPACE SUBMATCH FOUND ( %u of %lu used )\n", FL , offset, (long unsigned int) payload->length);
 			return (offset +payload->header_size +4);
@@ -853,10 +853,10 @@ int decode_row( struct globals *g, char *p, char *data_endpoint, struct sql_payl
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20150723-210259
-  Function Name	: ntonll
-  Returns Type	: uint64_t
-  	----Parameter List
+Date Code:	: 20150723-210259
+Function Name	: ntonll
+Returns Type	: uint64_t
+	----Parameter List
 	1. uint64_t value, 
 	------------------
 Exit Codes	: 
@@ -871,27 +871,23 @@ Changes:
 uint64_t ntohll(uint64_t value) {
 
 // hdump( &value, 8, "FP: ");
-	if (1==ntohl(1)) {
-	  return value;
-	} else {
-		return ((ntohl((value) & 0xFFFFFFFF) << 32) | ntohl((value) >> 32));
-	}
+	return value;
 }
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131008-182215
-  Function Name	: dump_row
-  Returns Type	: int
-  ----Parameter List
-  1. struct globals *glob, 
-  2.  char *p, 
-  3.  char *data_endpoint, 
-  4.  struct sql_payload *payload, 
-  5.  int decode , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131008-182215
+Function Name	: dump_row
+Returns Type	: int
+----Parameter List
+1. struct globals *glob, 
+2.  char *p, 
+3.  char *data_endpoint, 
+4.  struct sql_payload *payload, 
+5.  int decode , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 --------------------------------------------------------------------
@@ -969,64 +965,64 @@ int dump_row( struct globals *g, char *base, char *data_endpoint, struct sql_pay
 				case 0: fprintf(stdout,"NULL"); break;
 				case 1: fprintf(stdout,"x%d", to_signed_byte(*(payload->mapped_data +payload->cells[t].o)) ); break;
 				case 2: {
-							  uint16_t n;
-							  memcpy(&n, payload->mapped_data +payload->cells[t].o, 2 );
-							  fprintf(stdout,"%d" , to_signed_int(ntohs(n)));
-						  }
-						  break;
+							uint16_t n;
+							memcpy(&n, payload->mapped_data +payload->cells[t].o, 2 );
+							fprintf(stdout,"%d" , to_signed_int(ntohs(n)));
+						}
+						break;
 
 				case 3: {
-							  uint32_t n;
-							  memcpy(&n, payload->mapped_data +payload->cells[t].o, 3 );
-							  fprintf(stdout,"%ld", to_signed_long(ntohl(n)));
-						  }
-						  break;
+							uint32_t n;
+							memcpy(&n, payload->mapped_data +payload->cells[t].o, 3 );
+							fprintf(stdout,"%ld", to_signed_long(ntohl(n)));
+						}
+						break;
 
 				case 4: {
-							  uint32_t n;
-							  memcpy(&n, payload->mapped_data +payload->cells[t].o, 4 );
-							  fprintf(stdout,"%ld", to_signed_long(ntohl(n)));
-						  }
-						  break;
+							uint32_t n;
+							memcpy(&n, payload->mapped_data +payload->cells[t].o, 4 );
+							fprintf(stdout,"%ld", to_signed_long(ntohl(n)));
+						}
+						break;
 
 				case 5: fprintf(stdout,"%d", ntohl(*(payload->mapped_data +payload->cells[t].o))); break;
 				case 6: fprintf(stdout,"%d", ntohl(*(payload->mapped_data +payload->cells[t].o))); break;
 				case 7: 
-						  {
-						  uint64_t n;
+						{
+						uint64_t n;
 							memcpy(&n, payload->mapped_data +payload->cells[t].o, 8 );
 							ldf = (long double)ntohll(n);
-						  fprintf(stdout,"%LF",ldf); 
-						  }
-						  break;
+						fprintf(stdout,"%LF",ldf); 
+						}
+						break;
 
 				case 8: fprintf(stdout,"0" ); break;
 				case 9: fprintf(stdout,"1" ); break;
 				case 12: 
-						  if ( g->report_blobs) {
-							  if (payload->cells[t].s < g->blob_size_limit) {
-								  DEBUG fprintf(stdout,"%s:%d:DEBUG:Not Dumping data to blob file, keeping in CSV\n", FL );
-								  blob_dump((unsigned char *) (payload->mapped_data +payload->cells[t].o), payload->cells[t].s );
-							  } else {
-								  // dump the blob to a file.
-								  DEBUG fprintf(stdout,"%s:%d:DEBUG:Dumping data to %d.blob [%d bytes]\n", FL ,g->blob_count, payload->cells[t].s);
-								  blob_dump_to_file( g, (payload->mapped_data +payload->cells[t].o), payload->cells[t].s );
-								  DEBUG fprintf(stdout,"\"%d.blob\"", g->blob_count);
-							  }
-						  }
-						  g->blob_count++;
-						  break;
+						if ( g->report_blobs) {
+							if (payload->cells[t].s < g->blob_size_limit) {
+								DEBUG fprintf(stdout,"%s:%d:DEBUG:Not Dumping data to blob file, keeping in CSV\n", FL );
+								blob_dump((unsigned char *) (payload->mapped_data +payload->cells[t].o), payload->cells[t].s );
+							} else {
+								// dump the blob to a file.
+								DEBUG fprintf(stdout,"%s:%d:DEBUG:Dumping data to %d.blob [%d bytes]\n", FL ,g->blob_count, payload->cells[t].s);
+								blob_dump_to_file( g, (payload->mapped_data +payload->cells[t].o), payload->cells[t].s );
+								DEBUG fprintf(stdout,"\"%d.blob\"", g->blob_count);
+							}
+						}
+						g->blob_count++;
+						break;
 
 				case 13:
-						  DEBUG fprintf(stdout,"%s:%d:DEBUG: Dumping text-13\n", FL );
-						  sqltdump( payload->mapped_data +payload->cells[t].o, payload->cells[t].s ); 
-						  break;
+						DEBUG fprintf(stdout,"%s:%d:DEBUG: Dumping text-13\n", FL );
+						sqltdump( payload->mapped_data +payload->cells[t].o, payload->cells[t].s ); 
+						break;
 				default:
-						  fprintf(stderr,"Invalid cell type '%d'", payload->cells[t].t);
-						  DEBUG fprintf(stdout,"%s:%d:DEBUG: Invalid cell type '%d'", FL, payload->cells[t].t);
-						  DEBUG hdump( (unsigned char *) base, 128, "Invalid cell type" );
-						  return 0;
-						  break;
+						fprintf(stderr,"Invalid cell type '%d'", payload->cells[t].t);
+						DEBUG fprintf(stdout,"%s:%d:DEBUG: Invalid cell type '%d'", FL, payload->cells[t].t);
+						DEBUG hdump( (unsigned char *) base, 128, "Invalid cell type" );
+						return 0;
+						break;
 			} // switch cell type
 		}
 
@@ -1047,16 +1043,16 @@ int dump_row( struct globals *g, char *base, char *data_endpoint, struct sql_pay
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131004-211659
-  Function Name	: *find_next_sms
-  Returns Type	: char
-  ----Parameter List
-  1. char *s, 
-  2.  char *end_point , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131004-211659
+Function Name	: *find_next_sms
+Returns Type	: char
+----Parameter List
+1. char *s, 
+2.  char *end_point , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 Finds rows within a block.
@@ -1083,8 +1079,8 @@ char *find_next_row( struct globals *g, char *s, char *end_point, char *global_s
 			fflush(stdout);
 
 			/** If we're only wanting the removed, no-key-value rows, then 
-			  * continue to the next row 
-			  */
+			* continue to the next row 
+			*/
 			if ((g->removed_only)&&(row >= 0)) {
 				p++;
 				continue;
@@ -1126,16 +1122,16 @@ char *find_next_row( struct globals *g, char *s, char *end_point, char *global_s
 
 
 /*-----------------------------------------------------------------\
-  Date Code:	: 20131002-220317
-  Function Name	: main
-  Returns Type	: int
-  ----Parameter List
-  1. int argc, 
-  2.  char **argv , 
-  ------------------
-  Exit Codes	: 
-  Side Effects	: 
-  --------------------------------------------------------------------
+Date Code:	: 20131002-220317
+Function Name	: main
+Returns Type	: int
+----Parameter List
+1. int argc, 
+2.  char **argv , 
+------------------
+Exit Codes	: 
+Side Effects	: 
+--------------------------------------------------------------------
 Comments:
 
 --------------------------------------------------------------------
@@ -1151,14 +1147,14 @@ int main( int argc, char **argv ) {
 	int stat_result;
 
 	/**
-	 * Set up our global struct.
-	 *
-	 * We do this as a local var, rather than global so that it forces
-	 * us to pass it through the functions, rather than _assuming_ it's
-	 * available globally, which makes it a lot easier to migrate things
-	 * to other libs/modules later
-	 *
-	 */
+	* Set up our global struct.
+	*
+	* We do this as a local var, rather than global so that it forces
+	* us to pass it through the functions, rather than _assuming_ it's
+	* available globally, which makes it a lot easier to migrate things
+	* to other libs/modules later
+	*
+	*/
 	g = &globo;
 
 
@@ -1167,9 +1163,9 @@ int main( int argc, char **argv ) {
 	UNDARK_parse_parameters( argc, argv, g );
 
 	/**
-	 * Check our input file sanity
-	 *
-	 */
+	* Check our input file sanity
+	*
+	*/
 	stat_result = stat( g->input_file, &st );
 	if (stat_result != 0) {
 		fprintf(stderr,"ERROR: Cannot access input file '%s' ( %s )\n", g->input_file, strerror(errno));
@@ -1178,10 +1174,10 @@ int main( int argc, char **argv ) {
 
 
 	/**
-	 * Map our input file to memory, makes it a lot easier
-	 * to jump around if we need to and saves us having to
-	 * handle buffer limits - leave it to the OS to manage :)
-	 */
+	* Map our input file to memory, makes it a lot easier
+	* to jump around if we need to and saves us having to
+	* handle buffer limits - leave it to the OS to manage :)
+	*/
 	fd = open( g->input_file, O_RDONLY );
 	g->db_size = st.st_size;
 	g->db_origin = mmap( NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0 );
@@ -1190,25 +1186,25 @@ int main( int argc, char **argv ) {
 	//fprintf(stderr,"DB origin: %p\nDB end: %p\n", g->db_origin, g->db_end );
 
 	/**
-	 * Start decoding the database
-	 *
-	 * Though it's not really required for us to care about the
-	 * SQLite page sizes, it can be useful in case we get boundary
-	 * situations and try to follow the data across a page
-	 *
-	 * If the page size is already set via parameter, then skip
-	 *
-	 */
+	* Start decoding the database
+	*
+	* Though it's not really required for us to care about the
+	* SQLite page sizes, it can be useful in case we get boundary
+	* situations and try to follow the data across a page
+	*
+	* If the page size is already set via parameter, then skip
+	*
+	*/
 	if (g->page_size == 0) {
 		p = g->db_origin +16;
 		g->page_size =	(*(p+1)) | ((*p)<<8);
 	}
 
 	/**
-	 * Get the number of pages that are supposed to be in the database, though
-	 * we can ignore this and simply parse through the whole DB page at a time
-	 * until we reach the end
-	 */
+	* Get the number of pages that are supposed to be in the database, though
+	* we can ignore this and simply parse through the whole DB page at a time
+	* until we reach the end
+	*/
 	p = g->db_origin +28;
 	memcpy( &g->page_count, g->db_origin +28, 4 ); // copy the page count from the header
 	g->page_count = ntohl( g->page_count ); // convert to local format
@@ -1216,9 +1212,9 @@ int main( int argc, char **argv ) {
 	DEBUG fprintf(stdout,"Pagesize: %u, Pagecount: %u\n", g->page_size, g->page_count);
 
 	/** 
-	 * Get the free list meta data
-	 *
-	 */
+	* Get the free list meta data
+	*
+	*/
 	memcpy( &g->freelist_first_page, g->db_origin +32, 4 ); // copy the page count from the header
 	g->freelist_first_page = ntohl( g->freelist_first_page );
 	DEBUG fprintf(stdout,"First page of freelist trunk: %d\n", g->freelist_first_page );
@@ -1229,76 +1225,9 @@ int main( int argc, char **argv ) {
 
 
 	/**
-	 * Get the actual free list pages
-	 *
-	 */
-	if (0) {
-		if (g->freelist_page_count) {
-			g->freelist_pages = malloc( (g->freelist_page_count +1) *sizeof(uint32_t) );
-			if (!g->freelist_pages) {
-				fprintf(stderr,"ERROR: Cannot allocate memory to build page free list\n");
-				exit(1);
-			} else {
-				uint32_t next_page;
-				uint32_t pli;
-
-				next_page = g->freelist_first_page;
-				g->freelist_pages[0] = next_page;
-				g->freelist_pages[1] = 0;
-				pli = 1;
-				if ( pli < g->freelist_page_count ) {
-					do {
-						uint32_t tmp_page, leaf_page_count;
-						char *fp, *current_page_endpoint;
-						uint32_t jump;
-
-						jump = ((next_page-2) *g->page_size);
-						fp = g->db_origin +jump;
-						current_page_endpoint = fp +g->page_size;
-						fprintf(stdout,"Freelist - current trunk page = %d [ offset: %X ]\n", next_page, jump);
-						hdump((unsigned char*)fp, g->page_size, "Current trunk page");
-						DEBUG fflush(stdout);
-
-						memcpy( &tmp_page, fp, sizeof(uint32_t));
-						tmp_page = ntohl(tmp_page);
-						fp += sizeof(uint32_t);
-						DEBUG fprintf(stdout,"Next trunk page (if any): %d\n",tmp_page);
-						DEBUG fflush(stdout);
-
-						memcpy( &leaf_page_count, fp, sizeof(uint32_t));
-						leaf_page_count = ntohl(leaf_page_count);
-						fp += sizeof(uint32_t);
-						DEBUG fprintf(stdout,"Leaf page count: %d\n",leaf_page_count);
-						DEBUG fflush(stdout);
-
-						//while ((pli <= g->freelist_page_count)&&( fp < current_page_endpoint )) {
-						while (( fp < current_page_endpoint )&&( leaf_page_count-- )) {
-							hdump((unsigned char*)fp, 16, "Next free page possible");
-							memcpy( &(g->freelist_pages[pli]), fp, sizeof(uint32_t));
-							g->freelist_pages[pli] = ntohl( g->freelist_pages[pli] );
-							DEBUG fprintf(stdout, "Next free page[%d]: %d\n", pli, g->freelist_pages[pli]);
-							if (g->freelist_pages[pli] == 0) {
-								fprintf(stdout,"End of freelist detected\n");
-								fflush(stdout);
-								break;
-							}
-							fflush(stdout);
-							pli++;
-							fp+= sizeof(uint32_t);
-						}
-
-						next_page = tmp_page;
-					} while (next_page > 0);
-						fprintf(stdout,"Freepages - END\n");
-						fflush(stdout);
-					}
-				} // if there were more than one page
-			}
-
-		}
-
-
-
+	* Get the actual free list pages
+	*
+	*/
 		g->db_cfp = g->db_cpp = g->db_origin;
 
 		/*
@@ -1306,7 +1235,7 @@ int main( int argc, char **argv ) {
 			g->freelist_pages_current_index = 0;
 			data = f+((g->freelist_pages[g->freelist_pages_current_index]-1) *g->page_size);
 			}
-		 */
+		*/
 
 		DEBUG fprintf(stdout,"%s:%d:DEBUG: Commence decoding data\n", FL );
 		fflush(stdout);
@@ -1323,7 +1252,7 @@ int main( int argc, char **argv ) {
 
 			/* process the block, mostly this is just removing any 0-bytes
 				from the block so our strstr() calls aren't prematurely terminated.
-			 */
+			*/
 			DEBUG {
 				char *p;
 				size_t l;
@@ -1364,11 +1293,11 @@ int main( int argc, char **argv ) {
 				leaf.page_byte = 13;
 
 				/**
-				 * Get freeblock offset and determine if we have a free block in this
-				 * page that needs to be inspected.  This is one of the more commonly
-				 * needed parts of data for our row recovery 
-				 *
-				 */
+				* Get freeblock offset and determine if we have a free block in this
+				* page that needs to be inspected.  This is one of the more commonly
+				* needed parts of data for our row recovery 
+				*
+				*/
 				memcpy( &(leaf.freeblock_offset), (g->db_cfp +1), 2 );
 				leaf.freeblock_offset = ntohs( leaf.freeblock_offset );
 				if (leaf.freeblock_offset > 0) {
@@ -1420,18 +1349,18 @@ int main( int argc, char **argv ) {
 						);
 
 				/**
-				 * If we're wanting free block sourced data, then simply jump
-				 * to the start of the free block space and commence the searching
-				 * in the next section ( find_next_row ).
-				 *
-				 * After this the g->db_cfp pointer should be sitting on the first
-				 * varint of the payload header which defines the header length
-				 * (inclusive)
-				 *
-				 * Detecting rows in the freeblocks is done differently to the 
-				 * normal data, so 
-				 *
-				 */
+				* If we're wanting free block sourced data, then simply jump
+				* to the start of the free block space and commence the searching
+				* in the next section ( find_next_row ).
+				*
+				* After this the g->db_cfp pointer should be sitting on the first
+				* varint of the payload header which defines the header length
+				* (inclusive)
+				*
+				* Detecting rows in the freeblocks is done differently to the 
+				* normal data, so 
+				*
+				*/
 				if (g->freelist_space_only) {
 
 					if ((leaf.freeblock_offset > 0) && (leaf.freeblock_size > 0)) {
@@ -1480,18 +1409,18 @@ int main( int argc, char **argv ) {
 		}
 
 		/**
-		 * NOTE: Free #pages# are different to freeblocks within a page
-		 *
-		 *
-		 if ((g->freelist_space_only)&&(g->freelist_page_count)) {
-		 g->freelist_pages_current_index++;
-		 if (g->freelist_pages_current_index > g->freelist_page_count) {
-		 DEBUG fprintf(stdout,"%s:%d:DEBUG:Out of freespace pages, exiting search\n", FL );
-		 break;
-		 }
-		 data = f+((g->freelist_pages[g->freelist_pages_current_index] -1) *g->page_size);
-		 } else {
-		 */
+		* NOTE: Free #pages# are different to freeblocks within a page
+		*
+		*
+		if ((g->freelist_space_only)&&(g->freelist_page_count)) {
+		g->freelist_pages_current_index++;
+		if (g->freelist_pages_current_index > g->freelist_page_count) {
+		DEBUG fprintf(stdout,"%s:%d:DEBUG:Out of freespace pages, exiting search\n", FL );
+		break;
+		}
+		data = f+((g->freelist_pages[g->freelist_pages_current_index] -1) *g->page_size);
+		} else {
+		*/
 		{
 			g->db_cpp += g->page_size;
 			g->page_number++;
