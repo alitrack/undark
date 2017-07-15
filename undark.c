@@ -1286,7 +1286,7 @@ int main( int argc, char **argv ) {
 			leaf.page_number = g->page_number;
 
 			/* Decode the page header */
-			if (*(g->db_cfp) == 13) { 
+			if (*(g->db_cfp) == 13) {
 
 				DEBUG fprintf(stdout,"%s:%d:DEBUG: Decoding page header for page %d\n", FL , g->page_number );
 				fflush(stdout);
@@ -1396,7 +1396,7 @@ int main( int argc, char **argv ) {
 						if (row > g->db_cpp_limit) fprintf(stdout,"ERROR: beyond end point\n");
 						if (row < g->db_cfp) DEBUG fprintf(stdout,"%s:%d:DEBUG: Row location not in g->db_cfp page\n", FL );
 						if (row == NULL) DEBUG fprintf(stdout,"%s:%d:DEBUG: Row has been returned as NULL\n", FL );
-						DEBUG fprintf(stdout,"%s:%d:DEBUG: ROW found at offset: %ld\n", FL, row-g->db_cfp);
+						DEBUG fprintf(stdout,"%s:%d:DEBUG: ROW found at offset: %lu\n", FL, row-g->db_cfp);
 					} else {
 
 						break;
@@ -1425,6 +1425,9 @@ int main( int argc, char **argv ) {
 			g->db_cpp += g->page_size;
 			g->page_number++;
 		}
+
+        if (g->page_count < g->page_number)
+            break;
 
 	} // while (data < endpoint)
 
