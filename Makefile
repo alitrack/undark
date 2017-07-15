@@ -4,7 +4,7 @@
 
 LOCATION=/usr/local
 #CFLAGS=-Wall -g -I. -O2
-CFLAGS=-Wall -ggdb -I. -O0
+CFLAGS=-Wall -ggdb -I. -Og
 
 OBJ=undark
 OFILES=varint.o 
@@ -26,3 +26,6 @@ install: ${OBJ}
 
 clean:
 	rm -f *.o *core ${OBJ}
+
+run:
+	./undark --cellcount-min=50 --cellcount-max=60 --no-blobs --rowsize-min=420 --rowsize-max=1000 -i ../sms.db >sms-data.csv
