@@ -933,10 +933,22 @@ Changes:
 			payload->mapped_data_endpoint = data_endpoint;
 
 		} else {
-			int msize = (payload->length +100)*sizeof(uint8_t);
+			int msize = (payload->length)*sizeof(uint8_t);
+
+			// count size of overflow pages (if any)
+			ovpi = 0;
+			while (payload->overflow_pages[ovpi]) {
+				addr = g->db_origin +((payload->overflow_pages[ovpi]-1) *g->page_size) +4; //PLD:20141221-2240 segfault fix
+				if (( addr < (void *)g->db_origin) || ( addr+4 > (void *)g->db_end)) {
+					DEBUG fprintf(stdout,"%s:%d:dump_row:ERROR: page seek request outside of boundaries of file (%p < %p > %p)\n", FL, g->db_origin, addr, g->db_end);
+					return -1;
+				}
+				msize += g->page_size -4;
+				ovpi++;
+			}
+
 			printf("plength %ld, total: %d\n", payload->length, msize);
 			//__asm__("int $3");
-            //FIXME: This malloc causes a double free / corruption when msize > 4096
 			payload->mapped_data = malloc(msize);
 			if ( !payload->mapped_data ) {
 				fprintf(stderr,"%s:%d:ERROR: Cannot allocate %ld bytes for mapped data\n", FL, (long int)payload->length +100);
@@ -1062,7 +1074,6 @@ Changes:
 		if (payload->overflow_pages[0] != 0) {
 			//__asm__("int $3");
 			free( payload->mapped_data );
-			//avoid double free?
 		}
 
 		return 0;
